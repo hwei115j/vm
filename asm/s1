@@ -1,0 +1,25 @@
+        LDA ADS:    //測試
+        STA PTR:
+        CLA
+LOP:    LDA PTR: I
+        STA REG:
+        LDA PTR:
+        INC
+        STA PTR:
+        LDA REG:
+        ADD PTR: I
+        STA REG:    //test
+        LDA PTR:
+        INC
+        STA PTR:
+        LDA REG:
+        STA PTR: I
+        ISZ CRT:
+        BUN LOP:
+        HLT
+ADS:    DEC 1024    , 100
+REG:    DEC 0       , 101
+PTR:    DEC 1024    , 102
+CRT:    DEC MAX-2   , 103
+1024:   DEC 1       , 1024
+1025;   DEC 1       , 1025
