@@ -1,0 +1,9 @@
+    LDA A
+    ADD B
+    STA C
+    HLT
+    ORG 100
+A:  DEC 10  //sldkfjksdfjksdf
+B:  DEC 20  //alkdjfksdjfksdjf
+C:  DEC 0
+    END
