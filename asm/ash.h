@@ -1,3 +1,4 @@
+#include <stdio.h>
 #define MAX 110
 #define STR 20
 typedef struct 
@@ -12,8 +13,8 @@ typedef struct
     int num;
 }optab;
 
-int first_pass(asmcode *);
-int second_pass(asmcode *, optab *);
+int first_pass(asmcode *, FILE *);
+int second_pass(asmcode *);
 int func(char *);
 void clean(char *);
 void tabset(asmcode *, char *);
@@ -26,4 +27,7 @@ int ispara(char *);
 int isi(char *);
 int isblank_(char *);
 
+int decode(char *);
+int depara(asmcode *, char *);
+int16_t hex(int , int);
 void err(void);

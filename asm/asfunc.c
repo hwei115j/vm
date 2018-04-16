@@ -4,14 +4,12 @@
 #include "ash.h"
 
 
-int first_pass(asmcode *code)
+int first_pass(asmcode *code, FILE *input)
 {
     int i;
     int lc = 0;
     char str[MAX];
-    FILE *input;
 
-    input = fopen("input", "r");
     for(i = 0;fgets(str, MAX-10, input) != NULL; i++)
     {
         int n;
@@ -29,27 +27,37 @@ int first_pass(asmcode *code)
             lc++;
         }
     }
+    code[i-1].lc = -1;
     fclose(input);
 
-    return i;
+    return i + 1;
 }
 
-int second_pass(asmcode *code, optab *tab)
+int second_pass(asmcode *code)
 {
+    int i, j;
+    char *str;
+    FILE *output;
 
+    for(i = 0; code[i].lc != -1; i++)
+    {
+        int head, para;
+        
+        head = decode(code[i].code);
+        para = depara(code, code[i].para);
+        printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
+    }
+
+    return 0;
 }
 
 void tabset(asmcode *code, char *str)
 {
     char reg[4][10] = {};
-    int i, j, s;
+    int i;
    
     sscanf(str,"%s%s%s%s", reg[0], reg[1], reg[2], reg[3]);
-    for(j = 0; reg[j][0] != '\0'; j++);
-    j--;
 
-
-//    printf("reg: %s %s %s %s\n", reg[0], reg[1], reg[2], reg[3]);
     if(islabel(reg[0]))
     {
         strcpy(code->label, reg[0]);
@@ -106,36 +114,6 @@ void tabset(asmcode *code, char *str)
     }
     else
         err();
-/*    if(j == 2)
-    {
-        for(i = 0;reg[0][i] != '\0'; i++);
-        reg[0][i-1] = '\0';
-        strcpy(code->label, reg[0]);
-        strcpy(code->code, reg[1]);
-        strcpy(code->para, reg[2]);
-    }
-    else if(j == 1)
-    {
-        for(i = 0;reg[0][i] != '\0'; i++);
-        if(reg[0][i-1] == ':')
-        {
-            reg[0][i-1] = '\0';
-            strcpy(code->label, reg[0]);
-            strcpy(code->code, reg[1]);
-        }
-        else
-        {
-            strcpy(code->code, reg[0]);
-            strcpy(code->para, reg[1]);
-        }
-    }
-    else
-    {
-        if(reg[0][0] <= '9' && reg[0][0] >= '0')
-            strcpy(code->para, reg[0]);
-        else
-            strcpy(code->code, reg[0]);
-    }*/
 }
 
 
@@ -157,7 +135,7 @@ int func(char *str)
         return 1;
     if((ptr = strstr(str, "ORG")) != NULL)
     {
-        sscanf(ptr, "%*s%d", &reg);
+        sscanf(ptr, "%*s%x", &reg);
         return reg + 1;
     }
 
@@ -174,7 +152,7 @@ void print_code(asmcode *code, int count)
         printf("label:%s\n", code[i].label);
         printf("code :%s\n", code[i].code);
         printf("para :%s\n", code[i].para);
-        printf("lc   :%d\n\n", code[i].lc);
+        printf("lc   :%X\n\n", code[i].lc);
     }
 }
 
@@ -247,7 +225,7 @@ int islabel(char *str)
 
     for(i = 0; str[i] != '\0'; i++);
 
-    if(str[i - 1] == ':' && !(str[i - 1] = '\0'))
+    if(str[i - 1] == ':')
         return 1;
     return 0;
 }
@@ -258,9 +236,8 @@ int iscode(char *str)
     optab *code = init();
 
     for(i = 0;i < 25 && strstr(str, code[i].op) == NULL; i++);
-    free(code);
     if(i < 25)
-        return 1;
+        return code[i].num + 1;
     return 0;
 }
 
@@ -284,9 +261,45 @@ int isi(char *str)
 
 int isblank_(char *str)
 {
-    return !(str[0]);
+    return !(str[0] > 32);
 }
 
+int decode(char *str)
+{
+    int n;
+
+    if(!(n = iscode(str)))
+        return -1;
+    return n - 1;
+}
+
+int depara(asmcode *code, char *str)
+{
+    int i;
+    int n = strlen(str);
+
+    if(atoi(str) < 0)
+        return atoi(str);
+    if(str[0] == '\0')
+        return 0;
+    if((str[0] >= '0' && str[0] <= '9'))
+        return atoi(str);
+    for(i = 0; code[i].lc != -1; i++)
+    {
+        if(strstr(code[i].label, str) != NULL)
+            if(code[i].label[n] == ':')
+                return code[i].lc;
+    }
+    return -1;
+}
+
+int16_t hex(int head, int para)
+{
+    if(head > 15)
+        return head;
+    return ((head << 12) + para);
+}
 void err(void)
 {
+
 }

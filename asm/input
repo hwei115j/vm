@@ -3,7 +3,7 @@
     STA C
     HLT
     ORG 100
-A:  DEC 10  //sldkfjksdfjksdf
-B:  DEC 20  //alkdjfksdjfksdjf
+A:  DEC 10
+B:  DEC 20
 C:  DEC 0
-    END
+

@@ -1,9 +1,0 @@
-    LDA A
-    ADD B
-    STA C
-    HLE
-    ORG 100
-A:  DEC 10
-B:  DEC 20
-C:  DEC 0
-
