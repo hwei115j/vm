@@ -1,9 +1,23 @@
-    LDA A
-    ADD B
-    STA C
-    HLT
-    ORG 100
-A:  DEC 10
-B:  DEC 20
-C:  DEC 0
-
+LOP:    CLE
+        LDA     Y
+        CIR
+        STA     Y
+        SZE
+        BUN     ONE
+        BUN     ZRO
+ONE:    LDA     X
+        ADD     P
+        STA     P
+        CLE
+ZRO:    LDA     X
+        CLE
+        STA     X
+        ISZ     CTR
+        BUN     LOP
+        HLT
+        ORG     200
+CTR:    DEC     -8
+X:      DEC     15
+Y:      DEC     11
+P:      DEC     0
+        END

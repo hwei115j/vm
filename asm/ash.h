@@ -14,7 +14,7 @@ typedef struct
 }optab;
 
 int first_pass(asmcode *, FILE *);
-int second_pass(asmcode *);
+uint16_t *second_pass(asmcode *);
 int func(char *);
 void clean(char *);
 void tabset(asmcode *, char *);

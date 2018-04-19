@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ash.h"
-
+#define MEM 4096
 
 int first_pass(asmcode *code, FILE *input)
 {
@@ -27,28 +27,30 @@ int first_pass(asmcode *code, FILE *input)
             lc++;
         }
     }
-    code[i-1].lc = -1;
+    code[i].lc = -1;
     fclose(input);
 
     return i + 1;
 }
 
-int second_pass(asmcode *code)
+uint16_t *second_pass(asmcode *code)
 {
     int i, j;
     char *str;
-    FILE *output;
+    uint16_t *out = malloc(MEM * sizeof(uint16_t));
 
+    memset(out, 0, sizeof(uint16_t) * MEM);
     for(i = 0; code[i].lc != -1; i++)
     {
         int head, para;
         
         head = decode(code[i].code);
         para = depara(code, code[i].para);
-        printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
+        out[code[i].lc] = hex(head, para);
+//        printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
     }
 
-    return 0;
+    return out;
 }
 
 void tabset(asmcode *code, char *str)
