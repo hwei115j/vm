@@ -8,11 +8,11 @@ int first_pass(asmcode *code, FILE *input)
 {
     int i;
     int lc = 0;
+    int n = 0;
     char str[MAX];
 
-    for(i = 0;fgets(str, MAX-10, input) != NULL; i++)
+    for(i = 0;n >= 0 && fgets(str, MAX-10, input) != NULL; i++)
     {
-        int n;
 
         clean(str); //處理註解
         if(n = func(str))
@@ -47,7 +47,7 @@ uint16_t *second_pass(asmcode *code)
         head = decode(code[i].code);
         para = depara(code, code[i].para);
         out[code[i].lc] = hex(head, para);
-//        printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
+    //    printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
     }
 
     return out;
@@ -134,7 +134,7 @@ int func(char *str)
     int reg;
 
     if((ptr = strstr(str, "END")) != NULL)
-        return 1;
+        return -10;
     if((ptr = strstr(str, "ORG")) != NULL)
     {
         sscanf(ptr, "%*s%x", &reg);

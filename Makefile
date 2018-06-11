@@ -3,4 +3,4 @@ vm: main.c virtual.o
 virtual: virtual.c
 	gcc -c virtual.c 
 clean:
-	rm -f *.o *.exe
+	rm -f *.o *.exe *.stackdump 

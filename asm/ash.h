@@ -13,8 +13,8 @@ typedef struct
     int num;
 }optab;
 
-int first_pass(asmcode *, FILE *);
 uint16_t *second_pass(asmcode *);
+int first_pass(asmcode *, FILE *);
 int func(char *);
 void clean(char *);
 void tabset(asmcode *, char *);
