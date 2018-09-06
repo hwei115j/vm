@@ -47,7 +47,7 @@ uint16_t *second_pass(asmcode *code)
         head = decode(code[i].code);
         para = depara(code, code[i].para);
         out[code[i].lc] = hex(head, para);
-    //    printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
+        printf("memory[%X] = 0x%hx;\n",code[i].lc, hex(head, para));
     }
 
     return out;

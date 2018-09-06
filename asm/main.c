@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     fclose(input);
     fclose(output);
-//    print_code(arr, count);
+    print_code(arr, count);
 
     return 0;
 
