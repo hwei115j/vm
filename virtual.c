@@ -47,6 +47,7 @@ static int decode(uint16_t);
 void virtual(uint16_t *memory)
 {
     int reg = 0;
+    char ch;
     enum Code code;
 
     dr_reg = ir_reg = ac_reg = pc_reg = ar_reg = 0;
@@ -141,11 +142,13 @@ void virtual(uint16_t *memory)
                 s_ff = 0;
 				break;
 			case INP:
+                inpr_reg = getchar();
                 ac_reg = inpr_reg;
                 fgi_ff = 0;
 				break;
 			case OUT:
                 outr_reg = ac_reg & BK_HIGH8;
+                putchar(outr_reg);
                 fgo_ff = 0;
 				break;
 			case SKI:
