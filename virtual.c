@@ -70,6 +70,7 @@ void virtual(uint16_t *memory)
         ar_reg = ir_reg & BK_HIGH4;
         if(i_ff = ir_reg & MSB)
             ar_reg = memory[ar_reg] & BK_HIGH4;
+        //fprintf(stderr, "%x\n", ir_reg);
         switch(decode(ir_reg)) {
         case AND:
             ac_reg &= memory[ar_reg];
