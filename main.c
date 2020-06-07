@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         max = r;
     }
     for(i = max; i >= min; i--)
-        printf("%d = %d\n",i, memory[i]);
+        fprintf(stderr, "%d = %d\n",i, memory[i]);
     fclose(input);
     return 0;
 }
